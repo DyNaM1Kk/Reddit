@@ -4,6 +4,6 @@ namespace Reddit.Repositories
 {
     public interface ICommunitiesRepository
     {
-        public Task<PagedList<Community>> GetCommunities(int page, int pageSize, string? searchTerm);
+        public Task<PagedList<Community>> GetCommunities(int page, int pageSize, string? searchTerm, bool isAscending, string? sortKey);
     }
 }
