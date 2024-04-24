@@ -4,6 +4,7 @@ using Reddit.Dtos;
 using Reddit.Mapper;
 using Reddit.Models;
 using Reddit.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Reddit.Controllers
@@ -24,7 +25,7 @@ namespace Reddit.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PagedList<Community>>> GetCommunities(int page = 1, int pageSize = 3, string? searchTerm = null, bool isAscending = true, string? sortKey = null)
+        public async Task<ActionResult<PagedList<Community>>> GetCommunities(int page = 1, [Range(1, 50)]int pageSize = 3, string? searchTerm = null, bool isAscending = true, string? sortKey = null)
         {
             return await _communitiesRepository.GetCommunities(page, pageSize, searchTerm, isAscending, sortKey);
         }
