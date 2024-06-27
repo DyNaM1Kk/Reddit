@@ -1,0 +1,464 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace Reddit.Migrations
+{
+    /// <inheritdoc />
+    public partial class init2 : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Communities_Users_OwnerId",
+                table: "Communities");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_CommunityUser_Users_SubscribersId",
+                table: "CommunityUser");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Posts_Users_AuthorId",
+                table: "Posts");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Posts_AuthorId",
+                table: "Posts");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Users",
+                table: "Users");
+
+            migrationBuilder.RenameTable(
+                name: "Users",
+                newName: "AspNetUsers");
+
+            migrationBuilder.RenameColumn(
+                name: "Name",
+                table: "AspNetUsers",
+                newName: "RefreshTokenExpiration");
+
+            migrationBuilder.AddColumn<string>(
+                name: "AuthorId1",
+                table: "Posts",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "SubscribersId",
+                table: "CommunityUser",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "OwnerId",
+                table: "Communities",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "INTEGER",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Id",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER")
+                .OldAnnotation("Sqlite:Autoincrement", true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "AccessFailedCount",
+                table: "AspNetUsers",
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<string>(
+                name: "ConcurrencyStamp",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Email",
+                table: "AspNetUsers",
+                type: "TEXT",
+                maxLength: 256,
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailConfirmed",
+                table: "AspNetUsers",
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "LockoutEnabled",
+                table: "AspNetUsers",
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<DateTimeOffset>(
+                name: "LockoutEnd",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "NormalizedEmail",
+                table: "AspNetUsers",
+                type: "TEXT",
+                maxLength: 256,
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "NormalizedUserName",
+                table: "AspNetUsers",
+                type: "TEXT",
+                maxLength: 256,
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "PasswordHash",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "PhoneNumber",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "PhoneNumberConfirmed",
+                table: "AspNetUsers",
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<string>(
+                name: "RefreshToken",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "SecurityStamp",
+                table: "AspNetUsers",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "TwoFactorEnabled",
+                table: "AspNetUsers",
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<string>(
+                name: "UserName",
+                table: "AspNetUsers",
+                type: "TEXT",
+                maxLength: 256,
+                nullable: true);
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_AspNetUsers",
+                table: "AspNetUsers",
+                column: "Id");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_AuthorId1",
+                table: "Posts",
+                column: "AuthorId1");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Communities_AspNetUsers_OwnerId",
+                table: "Communities",
+                column: "OwnerId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CommunityUser_AspNetUsers_SubscribersId",
+                table: "CommunityUser",
+                column: "SubscribersId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Posts_AspNetUsers_AuthorId1",
+                table: "Posts",
+                column: "AuthorId1",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Communities_AspNetUsers_OwnerId",
+                table: "Communities");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_CommunityUser_AspNetUsers_SubscribersId",
+                table: "CommunityUser");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Posts_AspNetUsers_AuthorId1",
+                table: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Posts_AuthorId1",
+                table: "Posts");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_AspNetUsers",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "AuthorId1",
+                table: "Posts");
+
+            migrationBuilder.DropColumn(
+                name: "AccessFailedCount",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "ConcurrencyStamp",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Email",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "EmailConfirmed",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "LockoutEnabled",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "LockoutEnd",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "NormalizedEmail",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "NormalizedUserName",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "PasswordHash",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "PhoneNumber",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "PhoneNumberConfirmed",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "RefreshToken",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "SecurityStamp",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "TwoFactorEnabled",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "UserName",
+                table: "AspNetUsers");
+
+            migrationBuilder.RenameTable(
+                name: "AspNetUsers",
+                newName: "Users");
+
+            migrationBuilder.RenameColumn(
+                name: "RefreshTokenExpiration",
+                table: "Users",
+                newName: "Name");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "SubscribersId",
+                table: "CommunityUser",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "OwnerId",
+                table: "Communities",
+                type: "INTEGER",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Users",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT")
+                .Annotation("Sqlite:Autoincrement", true);
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Users",
+                table: "Users",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_AuthorId",
+                table: "Posts",
+                column: "AuthorId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Communities_Users_OwnerId",
+                table: "Communities",
+                column: "OwnerId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CommunityUser_Users_SubscribersId",
+                table: "CommunityUser",
+                column: "SubscribersId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Posts_Users_AuthorId",
+                table: "Posts",
+                column: "AuthorId",
+                principalTable: "Users",
+                principalColumn: "Id");
+        }
+    }
+}

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Reddit.Dtos;
 using Reddit.Mapper;
@@ -6,6 +7,7 @@ using Reddit.Models;
 
 namespace Reddit.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -17,12 +19,13 @@ namespace Reddit.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateAuthor(CreateUserDto createAuthorDto)
         {
             var author = new User
             {
-                Name = createAuthorDto.Name
+                UserName = createAuthorDto.UserName
             };
 
             await _context.Users.AddAsync(author);
@@ -30,12 +33,13 @@ namespace Reddit.Controllers
             return Ok();
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAuthors()
         {
             return await _context.Users.ToListAsync();
         }
+
         [HttpPost("JoinCommunity")]
         public async Task<IActionResult> JoinCommunity(int userId,int communityId)
         {
