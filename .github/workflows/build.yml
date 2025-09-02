@@ -10,37 +10,33 @@ jobs:
   build:
     name: Build and analyze
     runs-on: self-hosted
-    
+
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-            dotnet-version: 8.0.x
+
+      # Remove setup-dotnet if .NET 8 is already installed and in PATH
+      # - name: Setup .NET
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: 8.0.x
+
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
           path: ~\.sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - name: Cache SonarQube scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v4
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
-      - name: Install SonarQube scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+
+      # Remove SonarQube scanner cache and install steps
+
+      - name: Build, Test, and Analyze
         shell: powershell
         run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Build and analyze
-        shell: powershell
-        run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Reddit" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
           dotnet restore
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          # Run SonarQube analysis using the pre-installed scanner
+          D:\Desktop\sonar-scanner-cli-7.2.0.5079-windows-x64\sonar-scanner-7.2.0.5079-windows-x64\bin\sonar-scanner.bat ^
+            -D"sonar.projectKey=Reddit" ^
+            -D"sonar.token=${{ secrets.SONAR_TOKEN }}" ^
+            -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}"
