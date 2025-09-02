@@ -20,6 +20,7 @@ jobs:
         shell: powershell
         run: |
           dotnet sonarscanner begin /k:"Reddit" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet restore
           dotnet build --no-restore
           dotnet test --no-build --versobity normal
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
