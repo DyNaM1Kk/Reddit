@@ -13,30 +13,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      # Remove setup-dotnet if .NET 8 is already installed and in PATH
-      # - name: Setup .NET
-      #   uses: actions/setup-dotnet@v4
-      #   with:
-      #     dotnet-version: 8.0.x
-
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
         with:
-          path: ~\.sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      # Remove SonarQube scanner cache and install steps
+            fetch-depth: 0
 
       - name: Build, Test, and Analyze
         shell: powershell
         run: |
-          dotnet restore
+          dotnet sonarscanner begin /k:"Reddit" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           dotnet build --no-restore
-          dotnet test --no-build --verbosity normal
-          # Run SonarQube analysis using the pre-installed scanner
-          & 'D:\Desktop\sonar-scanner-cli-7.2.0.5079-windows-x64\sonar-scanner-7.2.0.5079-windows-x64\bin\sonar-scanner.bat' `
-            -D"sonar.projectKey=Reddit" `
-            -D"sonar.token=${{ secrets.SONAR_TOKEN }}" `
-            -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}"
+          dotnet test --no-build --versobity normal
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
