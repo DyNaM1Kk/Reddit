@@ -36,7 +36,7 @@ jobs:
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal
           # Run SonarQube analysis using the pre-installed scanner
-          D:\Desktop\sonar-scanner-cli-7.2.0.5079-windows-x64\sonar-scanner-7.2.0.5079-windows-x64\bin\sonar-scanner.bat ^
-            -D"sonar.projectKey=Reddit" ^
-            -D"sonar.token=${{ secrets.SONAR_TOKEN }}" ^
+          & 'D:\Desktop\sonar-scanner-cli-7.2.0.5079-windows-x64\sonar-scanner-7.2.0.5079-windows-x64\bin\sonar-scanner.bat' `
+            -D"sonar.projectKey=Reddit" `
+            -D"sonar.token=${{ secrets.SONAR_TOKEN }}" `
             -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}"
