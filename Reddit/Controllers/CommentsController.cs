@@ -8,6 +8,7 @@ namespace Reddit.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // TODO: Add authentication and authorization
     public class CommentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
